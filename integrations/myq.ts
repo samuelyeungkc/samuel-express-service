@@ -9,7 +9,7 @@ export class MyQ {
 
     constructor(email: string, password: string) {
         this.email = email;
-        this.password = email;
+        this.password = password;
     }
 
     async setGarageDoor(command: GarageDoorCommand) {
