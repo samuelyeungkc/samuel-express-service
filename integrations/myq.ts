@@ -1,31 +1,25 @@
-type MyQDevice = InstanceType<typeof myQDevice>;
-enum GarageDoorCommand {
-    OPEN = 'open',
-    CLOSE = 'close',
-}
+import { myQApi, myQDevice } from '@hjdhjd/myq';
+import {GarageDoorCommand} from '../types/MyQTypes';
 
-const { myQApi, myQDevice } = require("@hjdhjd/myq");
-const fs = require('fs');
+type MyQDevice = myQDevice;
 
-const data = fs.readFileSync('./configs/myq.json', 'utf8');
-const config: {email: string, password: string} = JSON.parse(data);
+export class MyQ {
+    private readonly email;
+    private readonly password;
 
-async function setGarageDoor(command: GarageDoorCommand) {
-    const myQ = new myQApi(config.email, config.password);
-    await myQ.refreshDevices();
-    console.log(myQ.devices);
-    const devices: MyQDevice[] = myQ.devices;
-    const garageDoors = devices.filter((device) => device.device_family === 'garagedoor');
-    console.log('console log', garageDoors);
-    garageDoors.forEach(door => {
-        myQ.execute(door, command);
-    });
-}
+    constructor(email: string, password: string) {
+        this.email = email;
+        this.password = email;
+    }
 
-export async function openGarageDoor() {
-    await setGarageDoor(GarageDoorCommand.OPEN);
-}
+    async setGarageDoor(command: GarageDoorCommand) {
+        const myQ: myQApi = new myQApi(this.email, this.password);
+        await myQ.refreshDevices();
+        const devices: MyQDevice[] = myQ.devices;
+        const garageDoors = devices.filter((device) => device.device_family === 'garagedoor');
+        garageDoors.forEach(door => {
+            myQ.execute(door, command);
+        });
+    } // end function
 
-export async function closeGarageDoor() {
-    await setGarageDoor(GarageDoorCommand.CLOSE);
-}
+} // end class
