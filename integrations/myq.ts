@@ -22,10 +22,10 @@ async function setGarageDoor(command: GarageDoorCommand) {
     });
 }
 
-export async function openGarageDoor(command: GarageDoorCommand) {
+export async function openGarageDoor() {
     await setGarageDoor(GarageDoorCommand.OPEN);
 }
 
-export async function closeGarageDoor(command: GarageDoorCommand) {
+export async function closeGarageDoor() {
     await setGarageDoor(GarageDoorCommand.CLOSE);
 }
